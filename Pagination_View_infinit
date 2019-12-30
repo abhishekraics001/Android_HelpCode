@@ -1,0 +1,97 @@
+1. Main Java Activeity 
+
+
+
+
+        for(int i =0 ; i<20; i++) {
+            ModelObject ob = new ModelObject("Abhi "+i, "data for page "+i);
+            al.add(ob);
+        }
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new CustomPagerAdapter(this, al));
+        
+       
+       
+       
+       
+       
+        
+2. Main Layout   
+     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    
+    
+    
+        
+        
+        
+        
+2.  Adapter Class
+import android.content.Context;
+import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.comviva.palmleaf.R;
+import com.integra.ml.customerform.model.ModelObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomPagerAdapter extends PagerAdapter {
+    private Context mContext;
+    public  static int currentActivePosition = -1;
+    List<ModelObject> al = new ArrayList<>();
+
+    
+    public CustomPagerAdapter(Context context, List<ModelObject> alx) {
+        al =  alx;
+        mContext = context;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup collection, int position) {
+        currentActivePosition = position;
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.customer_profile_details_cell, collection, false);
+
+        TextView itemName = (TextView) layout.findViewById(R.id.itemName);
+        itemName.setText(al.get(position).getPageName());
+
+        collection.addView(layout);
+        return layout;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup vieeContainer, int position, Object view) {
+        vieeContainer.removeView((View) view);
+    }
+
+    @Override
+    public int getCount() {
+        return al.size();
+    }
+    
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        ModelObject customPagerEnum = al.get(position);
+        return customPagerEnum.getPageName();
+    }
+
+}
+
