@@ -1,0 +1,66 @@
+public class Ecomm_Main_RecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
+    private Context context;
+    private List<Ecomm_ProductSubitem> data;
+    private Ecomm_Child_RecycleViewAdapter horizontalAdapter;
+    private RecyclerView.RecycledViewPool recycledViewPool;
+
+    public Ecomm_Main_RecycleViewAdapter(List<Ecomm_ProductSubitem> data, Context context) {
+        this.data = data;
+        this.context = context;
+        recycledViewPool = new RecyclerView.RecycledViewPool();
+    }
+
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view =null;
+        RecyclerView.ViewHolder viewHolder = null;
+        
+            View theView = LayoutInflater.from(context).inflate(R.layout.brandshop_main_recycleview_listrow, parent, false);
+            return new HomeViewHolder(theView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderx, final int position) {
+            HomeViewHolder holder = (HomeViewHolder) holderx;
+            holder.textViewCategory.setText(data.get(position).getSubItemList().get(0).getKeyName());
+            horizontalAdapter = new Ecomm_Child_RecycleViewAdapter(data.get(position).getSubItemList(), context, position);
+            holder.recyclerViewHorizontal.setAdapter(horizontalAdapter);
+            holder.recyclerViewHorizontal.setRecycledViewPool(recycledViewPool);
+    }
+
+
+    @Override
+    public int getItemCount() {
+        if(data != null) {
+            return data.size();
+        }
+        else {
+            return 0;
+        }
+    }
+
+
+    public class HomeViewHolder extends RecyclerView.ViewHolder {
+        private RecyclerView recyclerViewHorizontal;
+        private TextView textViewCategory;
+        private LinearLayoutManager horizontalManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        public HomeViewHolder(View itemView) {
+            super(itemView);
+            recyclerViewHorizontal = itemView.findViewById(R.id.home_recycler_view_horizontal);
+            recyclerViewHorizontal.setHasFixedSize(true);
+            recyclerViewHorizontal.setNestedScrollingEnabled(false);
+            recyclerViewHorizontal.setLayoutManager(horizontalManager);
+            recyclerViewHorizontal.setItemAnimator(new DefaultItemAnimator());
+            textViewCategory = itemView.findViewById(R.id.tv_movie_category);
+        }
+    }
+
+
+   
+
+
+}
