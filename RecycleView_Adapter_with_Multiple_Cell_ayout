@@ -1,0 +1,75 @@
+1. All login need to make inside in 1st / parrent recycleview adapter class
+2. Make sure u have diffrent ViewHolder calsss for each view and layout
+
+
+    private static final int LAYOUT_ONE= 0;
+    private static final int LAYOUT_TWO= 1;
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0 && data.get(position).getSubitemId().equalsIgnoreCase("itemDetails")) {
+            return LAYOUT_ONE;
+        }
+        else {
+            return LAYOUT_TWO;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view =null;
+        RecyclerView.ViewHolder viewHolder = null;
+        if(viewType==LAYOUT_ONE) {
+            View theView = LayoutInflater.from(context).inflate(R.layout.ecom_itemdetails_name, parent, false);
+            return new HomeViewHolderItemDetails(theView);
+        }else{
+            View theView = LayoutInflater.from(context).inflate(R.layout.brandshop_main_recycleview_listrow, parent, false);
+            return new HomeViewHolder(theView);
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderx, final int position) {
+        if(holderx.getItemViewType()== LAYOUT_ONE) {
+            HomeViewHolderItemDetails holder = (HomeViewHolderItemDetails) holderx;
+            holder.itemName.setText(""+data.get(position).getSlectedItemTitle());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.itemPrice.setText(Html.fromHtml(data.get(position).getSlectedID() , Html.FROM_HTML_MODE_COMPACT) + ""+data.get(position).getSlectedItemTitleVal());
+            } else {
+                holder.itemPrice.setText((Html.fromHtml(data.get(position).getSlectedID()) + ""+data.get(position).getSlectedItemTitleVal()));
+            }
+        }
+        else {
+            HomeViewHolder holder = (HomeViewHolder) holderx;
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.itemPricex.setText(Html.fromHtml(data.get(position).getSlectedID() , Html.FROM_HTML_MODE_COMPACT) + ""+data.get(position).getSlectedItemTitleVal());
+            } else {
+                holder.itemPricex.setText((Html.fromHtml(data.get(position).getSlectedID()) + ""+data.get(position).getSlectedItemTitleVal()));
+            }
+        }
+    }
+    
+    
+    
+    
+    public class HomeViewHolder extends RecyclerView.ViewHolder {
+          public HomeViewHolder(View itemView) {
+           private TextView itemPricex;
+            super(itemView);
+            }
+     }
+     
+     
+      public class HomeViewHolderItemDetails extends RecyclerView.ViewHolder {
+        private TextView itemName, itemPrice;
+        public HomeViewHolderItemDetails(View itemView) {
+            super(itemView);
+            }
+        }
